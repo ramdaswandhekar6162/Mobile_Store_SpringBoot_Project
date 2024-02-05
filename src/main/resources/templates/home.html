@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+  <!--    <style>
+        body {
+            background-image: url('https://source.unsplash.com/random/1600x900/?mobile+store');
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .card {
+            margin-bottom: 20px;
+        }
+        .card {
+        	border-radius : 10%;
+        	background-color: #81ecec;
+        	box-shadow: 0 2px 5px #ccc;
+        	text-align: center;
+        }
+        .card img {
+ 			 margin: 10px 0 0 25px;
+			}
+			
+		.circle-img {
+  border-radius: 50%;
+  border: 7px solid #fff;
+  
+  width: 300px;
+  height: 300px;
+}
+    </style> -->
+    
+    
+    <style>
+    body {
+        background-image: url('https://source.unsplash.com/random/1600x900/?mobile+store');
+    }
+
+    .container {
+        margin-top: 50px;
+    }
+
+    .card {
+        border-radius: 10%;
+        background-color: rgba(255, 255, 255, 0.8);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+        margin-bottom: 20px;
+    }
+
+    .card img {
+        margin: 10px 0 0 25px;
+    }
+
+    .circle-img {
+        border-radius: 50%;
+        border: 7px solid #fff;
+        width: 300px;
+        height: 300px;
+    }
+
+    .card-text {
+        color: #333;
+    }
+
+    .glass-effect {
+        background-color: rgba(255, 255, 255, 0.5);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+        backdrop-filter: blur(5px);
+    }
+    
+    .heading {
+  text-align: center;
+  font-size: 2em;
+  color: #2d3436;
+  margin: 20px 0 30px;
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+    <a class="navbar-brand" href="#">OnePlus Store</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <!-- Add more navigation links as needed -->
+        </ul>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/home/orderinfo/{cId} (cId = ${user.id})}">Order Info !</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Settings</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Help</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/home/logout">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+	
+	
+	<div class="container">
+    <h2 class="text-center mb-4 heading">Welcome, <span th:text="${user.firstName}"></span>!</h2>
+
+    <!-- Product Cards -->
+    <div class="row">
+        <!-- Iterate through the list of products -->
+        <div th:each="product : ${product}" class="col-md-4">
+            <div class="card">
+           <!--  <input type="hidden" value="${product.id}" name="pId" th:field="">
+            <input type="hidden" value="${user.id}" name="uId"> -->
+            <img th:src="${product.img}" class="circle-img" th:alt="@{/img/dummy-phone.jpg}">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${product.brand.name}"></h5>
+                    <p class="card-text" th:text="${product.modelName}"></p>
+                    <p class="card-text" th:text="'Price: $' + ${product.price}"></p>
+                    <p class="card-text" th:text="'Storage: ' + ${product.storageCapacity}"></p>
+                 <!--   <a th:href="@{/home/order/{pId}/{uId} (pId=${product.id}) (uId=${user.id})}" class="btn btn-primary">Buy</a>
+                -->
+                <a th:href="@{/home/order/{pId}/{uId} (pId=${product.id}, uId=${user.id})}" class="btn btn-primary">Buy</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS and Popper.js -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+	
+
+</body>
+</html>

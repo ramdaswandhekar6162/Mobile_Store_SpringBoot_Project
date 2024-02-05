@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Page</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="text-center mb-4">Registration</h2>
+                    
+                    <!-- Registration Form -->
+                    <form th:action="@{/mobile/register}" th:object="${user}" method="post" onsubmit="return validateForm()">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input id="firstName" type="text" th:field="*{firstName}" class="form-control" pattern="[A-Za-z]+" placeholder="Ram" required>
+                            <small id="firstNameError" class="error"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input id="lastName" type="text" th:field="*{lastName}" class="form-control" pattern="[A-Za-z]+" placeholder="Wandhekar" required>
+                            <small id="lastNameError" class="error"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input id="email" type="email" th:field="*{email}" class="form-control" placeholder="demo@gmail.com" required>
+                            <small id="emailError" class="error"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneNumber">Phone Number</label>
+                            <input id="phoneNumber" type="text" th:field="*{phoneNumber}" class="form-control" minlength="10" placeholder="1234567890" required>
+                            <small id="phoneNumberError" class="error"></small>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-block">Register</button>
+                    </form>
+
+                    <hr>
+
+                    <!-- Back to Login -->
+                    <p class="text-center mb-0">Already have an account? <a href="#" th:href="@{/mobile/signin}">Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS and Popper.js -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+<script type="text/javascript">
+
+function validateForm() {
+    var isValid = true;
+
+    // Validate firstName user
+    var firstName = $("#firstName").val().trim();
+    if (firstName === '') {
+        $('#firstNameError').text('Username is required');
+        $('#firstName').addClass('is-invalid');
+        isValid = false;
+    } else {
+        $('#firstNameError').text('');
+        $('#firstName').removeClass('is-invalid');
+    }
+    
+    // validate last name user
+    var lastName = $("#lastName").val().trim();
+    if(lastName === ''){
+    	$("#lastNameError").text("last Name is required");
+    	$("#lastName").addClass("is-invalid");
+    	isValid = false;
+    } else {
+    	$("#lastNameError").text('');
+    	$("#lastName").removeClass("is-invalid");
+    }
+    
+    // validate email user
+    var email = $("#email").val().trim();
+    
+    if(email === ''){
+    	
+    	$("#email").text("email is required");
+   		$("#emailError").addClass("is-invalid");
+   		isValid = false;
+    } else {
+    	$("#email").text('');
+    	$("#emailError").removeClass("is-invalid")
+    }
+    
+    // validate phone number
+   var phoneNumber = $("#phoneNumber").val().trim();
+var phoneRegex = /^[0-9]+$/;
+
+if (phoneNumber === '') {
+    $("#phoneNumber").text("Mobile Number is required");
+    $("#phoneNumberError").addClass("is-invalid");
+    isValid = false;
+} else if (!phoneRegex.test(phoneNumber)) {
+    $("#phoneNumber").text("Invalid Mobile Number. Only numeric values are allowed.");
+    $("#phoneNumberError").addClass("is-invalid");
+    isValid = false;
+} else if (phoneNumber.length !== 10) {
+    $("#phoneNumber").text("Mobile Number must be exactly 10 digits.");
+    $("#phoneNumberError").addClass("is-invalid");
+    isValid = false;
+} else {
+    $("#phoneNumber").text('');
+    $("#phoneNumberError").removeClass("is-invalid");
+}
+
+    return isValid;
+}
+</script>
+
+
+</body>
+</html>

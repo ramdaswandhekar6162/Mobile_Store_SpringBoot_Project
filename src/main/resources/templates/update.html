@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .card {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+
+<body>
+
+<!-- Your update form content goes here -->
+<div class="container mt-4">
+    <h2>Update Brand</h2>
+
+    <form th:action="@{/admin/update/save}" th:object="${brand}" method="post">
+        <!-- Include fields for updating admin information -->
+        <input type="hidden" th:field="*{id}" />
+        <div class="form-group">
+            <label for="username">Brand Name:</label>
+            <input type="text" class="form-control" id="username" th:field="*{name}" required>
+        </div>
+       <!--<div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" class="form-control" id="password" th:field="*{password}" required>
+        </div> -->
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+</div>
+
+<!-- Include necessary scripts -->
+
+</body>
+
+</html>

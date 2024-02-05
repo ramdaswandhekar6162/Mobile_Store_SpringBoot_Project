@@ -1,0 +1,85 @@
+<!-- showOrders.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Your Orders</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Add your custom styles here -->
+    <style>
+        body {
+       background-image: url('https://source.unsplash.com/random/1600x900/?mobile+store');
+           background-size: cover;
+           backdrop-filter: blur(10px);
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.7); /* Adjust transparency as needed */
+            background-color : #fff8e1;
+            border: none;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px); /* Add glass effect with background blur */
+        }
+
+        h2 {
+            color: #007bff;
+            text-align: center;
+        }
+
+       /*  table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            text-align: left;
+        }
+
+        thead {
+            background-color: #007bff;
+            color: white;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+*/
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Your Orders</h2>
+        <div th:each="order : ${orders}" class="card">
+            <h4 th:text="${order.mobilephone.getModelName()}"></h4>
+            <p><strong>Order ID:</strong> <span th:text="${order.Id}"></span></p>
+            <p><strong>Order Date:</strong> <span th:text="${order.date}"></span></p>
+            <p><strong>Quantity:</strong> <span th:text="${order.quantity}"></span></p>
+            <p><strong>Total Amount:</strong> <span th:text="${order.totalAmount}"></span></p>
+            <div class="text-center">
+                <a th:href="@{/home/orders/cancel/{orderId}(orderId=${order.Id})}" class="btn btn-danger">Cancel</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

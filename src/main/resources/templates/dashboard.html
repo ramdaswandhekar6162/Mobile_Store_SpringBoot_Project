@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url('https://source.unsplash.com/random/1600x900/?mobile+phone');
+        }
+
+        .container {
+            margin-top: 50px;
+            
+        }
+
+        .card {
+            margin-bottom: 20px;
+            background-image: url('https://source.unsplash.com/random/1600x900/?mobile+phone');
+  
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Admin Dashboard</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="admin/customers">Customers</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="admin/orders">Orders</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#products">Products</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="https://web.dev/">Reports</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#settings">Settings</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+    <h2 class="text-center mb-4">Admin Dashboard</h2>
+
+    <!-- Brand Management Card -->
+    <div class="card">
+        <div class="card-header">
+            Brand Management
+        </div>
+        <div class="card-body" th:each="object : ${brandInfo}">
+			<p class="card-text" th:text="'Brand Id : ' +${object.id}">
+            <p class="card-text" th:text="'Brand: $' +${object.name}"></p>
+           <!--<button class="btn btn-warning" data-toggle="modal" data-target="#editBrandModal${object.id}">Change Brand</button>
+           --   <button class="btn btn-warning" th:href="@{/admin/update/{bId} (bId=${object.id})}">Change Brand</button> -->
+           <a th:href="@{/admin/update/{bid} (bId=${object.id})}" class="btn btn-warning">Update Brand</a>
+           <a th:href="@{/admin/delete/{bId} (bId=${object.id})}" class="btn btn-danger">Delete Brand</a>
+            <!--  <button class="btn btn-danger">Delete Brand</button> -->
+            
+        </div>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#addBrandModal">Add Brand</button>
+    </div>
+
+    <!-- Mobile Information Management Card -->
+    <div id="products" class="card">
+        <div class="card-header">
+            Mobile Information Management
+        </div>
+        <div class="card-body" th:each="productObj :${productInfo}">
+           	<p class="card-text" th:text="'Mobile Name :' + ${productObj.modelName}"></p>
+           	<p class="card-text" th:text="'Brand Name :' + ${productObj.brand.getName()}"></p>
+           	<p class="card-text" th:text="'Storage Capacity :' + ${productObj.storageCapacity} "></p>
+           	<p class="card-text" th:text="'Price :$' + ${productObj.price}"></p>
+            <a th:href="@{/admin/mobileupdate/{mId} (mId=${productObj.id})}" class="btn btn-warning">Change Mobile Info</a>
+            <a th:href="@{/admin/mobiledelete/{mId} (mId=${productObj.id})}" class="btn btn-danger">Delete Mobile Info</a>
+        </div>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#addMobileModal">Add Mobile Info</button>
+    </div>
+</div>
+
+<!-- Add Brand Modal -->
+<div class="modal fade" id="addBrandModal" tabindex="-1" role="dialog" aria-labelledby="addBrandModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addBrandModalLabel">Add Brand</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Add brand form goes here -->
+                <form th:action="@{/admin/addbrand}" th:object="${brand}" method="POST">
+                    <div class="form-group">
+                        <label for="brandName">Brand Name</label>
+                        <input type="text" class="form-control" id="brandName" name ="brandName" th:field="*{name}" placeholder="Enter Brand Name" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Brand</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Update Brand Model -->
+
+
+<!-- Add Mobile Modal -->
+<div class="modal fade" id="addMobileModal" tabindex="-1" role="dialog" aria-labelledby="addMobileModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addMobileModalLabel">Add Mobile Info</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Add mobile info form goes here -->
+                <form th:action="@{/admin/addmobile}" th:object="${product}" method="POST">
+                    <div class="form-group">
+                    	<label for="mobileBrand">Mobile Brand</label>
+                    	<select class="form-control" id="mobileBrand" th:field="*{brand}" required>
+                            <option value="" disabled selected>Select Brand</option>
+                            <!-- Iterate over brandInfo to populate the options -->
+                            <option th:each="brandObj : ${brandInfo}" th:value="${brandObj.id}"
+                                    th:text="${brandObj.name}"></option>
+                        </select>
+                    	<!--  <input type="number" class="form-control" id="mobileBrand" placeholder="Enter Mobile Brand id" th:field="*{brand}" required> -->
+                        <label for="mobileName">Mobile Name</label>
+                        <input type="text" class="form-control" id="mobileName" placeholder="Enter Mobile Name" th:field="*{modelName}" required>
+                        <label for="mobileStorae">Mobile Storage Capacity</label>
+                        <input type="number" class="form-control" id="mobileStorageCapacity" placeholder="Enter Mobile Storage Capacity" th:field="*{storageCapacity}" required>
+                        <label for="mobilePrice">Price $</label>
+                        <input type="number" class="form-control" id="mobilePrice" placeholder="00.00" th:field="*{price}" required>
+                        <label for="mobilePrice">Image URL</label>
+                        <input type="text" class="form-control" id="mobilePrice" placeholder="https://myimg.com" th:field="*{img}" required>
+                    </div>
+                    <!-- Add more fields as needed -->
+                    <button type="submit" class="btn btn-primary">Add Mobile Info</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS and Popper.js -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+</body>
+</html>
